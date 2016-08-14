@@ -11,4 +11,3 @@ class MainController extends Controller
         return $this->render('main/homepage.html.twig');
     }
 }
-

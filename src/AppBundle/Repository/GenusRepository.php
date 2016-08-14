@@ -7,6 +7,9 @@ use Doctrine\ORM\EntityRepository;
 
 class GenusRepository extends EntityRepository
 {
+    /**
+     * @return Genus[]
+     */
     public function findAllPublishedOrderedByRecentlyActive()
     {
         return $this->createQueryBuilder('genus')

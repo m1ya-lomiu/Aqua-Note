@@ -26,7 +26,7 @@ class MarkdownTransformer
 
         sleep(1);
         $str = $this->markdownParser
-                ->transformMarkdown($str);
+            ->transformMarkdown($str);
         $cache->save($key, $str);
 
         return $str;

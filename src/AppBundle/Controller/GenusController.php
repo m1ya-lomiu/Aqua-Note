@@ -1,32 +1,31 @@
 <?php
 
 namespace AppBundle\Controller;
+
+use AppBundle\Entity\Genus;
+use AppBundle\Entity\GenusNote;
 use AppBundle\Service\MarkdownTransformer;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use AppBundle\Entity\Genus;
-use AppBundle\Entity\GenusNote;
-
 
 class GenusController extends Controller
 {
-
     /**
      * @Route("/genus/new")
      */
     public function newAction()
     {
         $genus = new Genus();
-        $genus->setName('Octopus'.rand(1,100));
+        $genus->setName('Octopus'.rand(1, 100));
         $genus->setSubFamily('Octopodinae');
         $genus->setSpeciesCount(rand(100, 99999));
 
         $note = new GenusNote();
         $note->setUsername('AquaWeaver');
-        $note->setUserAvatarFileName('ryan.jpeg');
+        $note->setUserAvatarFilename('ryan.jpeg');
         $note->setNote('I counted 8 legs... as they wrapped around me');
         $note->setCreatedAt(new \DateTime('-1 month'));
         $note->setGenus($genus);
@@ -36,52 +35,40 @@ class GenusController extends Controller
         $em->persist($note);
         $em->flush();
 
-        return new Response('<html><body>Genus created</body></html>');
+        return new Response('<html><body>Genus created!</body></html>');
     }
 
     /**
-     * @route("/genus")
+     * @Route("/genus")
      */
     public function listAction()
     {
         $em = $this->getDoctrine()->getManager();
-        dump($em->getRepository('AppBundle:Genus'));
+
         $genuses = $em->getRepository('AppBundle:Genus')
             ->findAllPublishedOrderedByRecentlyActive();
 
         return $this->render('genus/list.html.twig', [
             'genuses' => $genuses
         ]);
-
     }
-    
+
     /**
      * @Route("/genus/{genusName}", name="genus_show")
      */
     public function showAction($genusName)
     {
         $em = $this->getDoctrine()->getManager();
+
         $genus = $em->getRepository('AppBundle:Genus')
             ->findOneBy(['name' => $genusName]);
+
         if (!$genus) {
-            throw $this->createNotFoundException('No genus found');
+            throw $this->createNotFoundException('genus not found');
         }
 
-        $transformer = $this->get('app.markdown_transformer');
-        $funFact = $transformer->parse($genus->getFunFact());
-
-
-//        $cache = $this->get('doctrine_cache.providers.my_markdown_cache');
-//        $key = md5($funFact);
-//        if ($cache->contains($key)) {
-//            $funFact = $cache->fetch($key);
-//        } else {
-//            sleep(1);
-//            $funFact = $this->get('markdown.parser')
-//                ->transform($funFact);
-//            $cache->save($key, $funFact);
-//        }
-
+        $markdownTransformer = $this->get('app.markdown_transformer');
+        $funFact = $markdownTransformer->parse($genus->getFunFact());
 
         $this->get('logger')
             ->info('Showing genus: '.$genusName);
@@ -89,11 +76,11 @@ class GenusController extends Controller
         $recentNotes = $em->getRepository('AppBundle:GenusNote')
             ->findAllRecentNotesForGenus($genus);
 
-        return $this->render('genus/show.html.twig', [
+        return $this->render('genus/show.html.twig', array(
             'genus' => $genus,
             'funFact' => $funFact,
             'recentNoteCount' => count($recentNotes)
-        ]);
+        ));
     }
 
     /**
@@ -103,11 +90,12 @@ class GenusController extends Controller
     public function getNotesAction(Genus $genus)
     {
         $notes = [];
+
         foreach ($genus->getNotes() as $note) {
             $notes[] = [
                 'id' => $note->getId(),
                 'username' => $note->getUsername(),
-                'avatarURI' => '/images/'.$note->getUserAvatarFileName(),
+                'avatarUri' => '/images/'.$note->getUserAvatarFilename(),
                 'note' => $note->getNote(),
                 'date' => $note->getCreatedAt()->format('M d, Y')
             ];
@@ -117,6 +105,6 @@ class GenusController extends Controller
             'notes' => $notes
         ];
 
-        return New JsonResponse($data);
+        return new JsonResponse($data);
     }
 }
