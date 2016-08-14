@@ -66,6 +66,11 @@ class Genus
         $this->notes = new ArrayCollection();
     }
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
     public function getName()
     {
         return $this->name;
@@ -74,14 +79,6 @@ class Genus
     public function setName($name)
     {
         $this->name = $name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**
@@ -127,9 +124,6 @@ class Genus
         $this->isPublished = $isPublished;
     }
 
-    /**
-     * @return mixed
-     */
     public function getIsPublished()
     {
         return $this->isPublished;

@@ -2,7 +2,6 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\AppBundle;
 use AppBundle\Entity\SubFamily;
 use AppBundle\Repository\SubFamilyRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -19,8 +18,8 @@ class GenusFormType extends AbstractType
         $builder
             ->add('name')
             ->add('subFamily', EntityType::class, [
-                'class' => SubFamily::class,
                 'placeholder' => 'Choose a Sub Family',
+                'class' => SubFamily::class,
                 'query_builder' => function(SubFamilyRepository $repo) {
                     return $repo->createAlphabeticalQueryBuilder();
                 }
@@ -30,14 +29,12 @@ class GenusFormType extends AbstractType
             ->add('isPublished', ChoiceType::class, [
                 'choices' => [
                     'Yes' => true,
-                    'No' => false
+                    'No' => false,
                 ]
             ])
             ->add('firstDiscoveredAt', DateType::class, [
                 'widget' => 'single_text',
-                'attr' => [
-                    'class' => 'js-datepicker'
-                ],
+                'attr' => ['class' => 'js-datepicker'],
                 'html5' => false,
             ])
         ;
@@ -49,5 +46,4 @@ class GenusFormType extends AbstractType
             'data_class' => 'AppBundle\Entity\Genus'
         ]);
     }
-
 }
