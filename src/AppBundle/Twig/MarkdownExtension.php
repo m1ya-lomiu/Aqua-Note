@@ -1,6 +1,6 @@
 <?php
 
-namespace  AppBundle\Twig;
+namespace AppBundle\Twig;
 
 use AppBundle\Service\MarkdownTransformer;
 
@@ -12,7 +12,6 @@ class MarkdownExtension extends \Twig_Extension
     {
         $this->markdownTransformer = $markdownTransformer;
     }
-
 
     public function getFilters()
     {

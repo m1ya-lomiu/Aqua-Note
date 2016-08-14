@@ -25,7 +25,7 @@ class GenusNote
     /**
      * @ORM\Column(type="string")
      */
-    private $userAvatarFileName;
+    private $userAvatarFilename;
 
     /**
      * @ORM\Column(type="text")
@@ -43,92 +43,58 @@ class GenusNote
      */
     private $genus;
 
-    /**
-     * @return mixed
-     */
-    public function getGenus()
-    {
-        return $this->genus;
-    }
-
-    /**
-     * @param mixed $genus
-     */
-    public function setGenus(Genus $genus)
-    {
-        $this->genus = $genus;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getUsername()
     {
         return $this->username;
     }
 
-    /**
-     * @param mixed $username
-     */
     public function setUsername($username)
     {
         $this->username = $username;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getUserAvatarFileName()
+    public function getUserAvatarFilename()
     {
-        return $this->userAvatarFileName;
+        return $this->userAvatarFilename;
     }
 
-    /**
-     * @param mixed $userAvatarFileName
-     */
-    public function setUserAvatarFileName($userAvatarFileName)
+    public function setUserAvatarFilename($userAvatarFilename)
     {
-        $this->userAvatarFileName = $userAvatarFileName;
+        $this->userAvatarFilename = $userAvatarFilename;
     }
 
-    /**
-     * @return mixed
-     */
     public function getNote()
     {
         return $this->note;
     }
 
-    /**
-     * @param mixed $note
-     */
     public function setNote($note)
     {
         $this->note = $note;
     }
 
-    /**
-     * @return mixed
-     */
     public function getCreatedAt()
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param mixed $createdAt
-     */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
     }
 
+    public function getGenus()
+    {
+        return $this->genus;
+    }
+
+    public function setGenus(Genus $genus)
+    {
+        $this->genus = $genus;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
 }
