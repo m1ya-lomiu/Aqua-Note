@@ -1,4 +1,4 @@
-# Validation with the UniqueEntity Validation
+# Validation with the UniqueEntity Constraint
 
 Registration is working, but it's missing validation.
 
@@ -7,10 +7,16 @@ should live. First, you need the `use` statement for the annotations. We added v
 earlier in `Genus`. So, you can either copy this `use` statement, grab it from the
 documentation, or do what I do: cheat by saying `use`, auto-completing an annotation
 I know exists - like `NotBlank`, deleting the last part, and adding the normal
-`as Assert` alias.
+`as Assert` alias:
+
+[[[ code('395fc2df09') ]]]
 
 We obviously want email to be `NotBlank`. We also want email to be a valid email
-address. For `plainPassword`, that should also not be blank. Pretty simple.
+address. For `plainPassword`, that should also not be blank:
+
+[[[ code('94d0552ca8') ]]]
+
+Pretty simple.
 
 Ok, go back, keep the form blank, and submit. Nice validation errors.
 
@@ -18,8 +24,7 @@ Ok, go back, keep the form blank, and submit. Nice validation errors.
 
 But check this out: type `weaverryan+1@gmail.com`. That email is already taken, so
 I should *not* be able to do this. But since there aren't any validation rules
-checking this, the request goes through and the INSERT query explodes! I at least
-remembered to make this a unique column in the database. But, a 500 error is no bueno.
+checking this, the request goes through and the email looks totally valid.
 
 How can we add a validation rule to prevent that? By using a special validation constraint
 made *just* for this occasion.
@@ -39,9 +44,10 @@ in the database - and `message` so we can say something awesome when it happens.
 
 So add `fields={"email"}`. This is called *fields* because you *could* make this
 validation be unique across several columns. Then add
-`message="Looks like you already have an account"`.
+`message="It looks like you already have an account!"`:
 
-Cool! Go back and hit register again. Validation errors are so much prettier
-than database errors.
+[[[ code('a276e26fca') ]]]
+
+Cool! Go back and hit register again. This just makes me happy!
 
 We're good, right? Well, almost. There's one last gotcha with validation and registration.
